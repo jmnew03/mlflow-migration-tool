@@ -16,7 +16,7 @@ A high-performance Python script to migrate MLflow runs between experiments in a
 
 ```bash
 # Clone this repository
-git clone https://github.com/YOUR_USERNAME/mlflow-migration-tool.git
+git clone https://github.com/jmnew03/mlflow-migration-tool.git
 cd mlflow-migration-tool
 
 # Install dependencies
