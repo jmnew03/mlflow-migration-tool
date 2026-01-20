@@ -1,6 +1,6 @@
 # MLflow Run Migration Tool ⚡
 
-A high-performance Python script to migrate MLflow runs between experiments. Features **batch API operations** and **parallel processing** for 10-60x faster migration compared to naive approaches.
+A high-performance Python script to migrate MLflow runs between experiments. 
 
 ## ✨ Features
 
@@ -8,7 +8,6 @@ A high-performance Python script to migrate MLflow runs between experiments. Fea
 - 📦 **Batch operations** for efficient data transfer
 - ✅ **Complete data preservation**: parameters, metrics (with history), tags, artifacts
 - 🔍 **Selective migration**: filter by run IDs or tags
-- 📊 **Progress tracking** with timing statistics
 - 🛡️ **Non-destructive**: original runs remain untouched
 
 ## 🚀 Quick Start
@@ -96,7 +95,7 @@ python migrate_mlflow_runs.py --source 1 --target 2 --batch-size 2000 --parallel
 Open your MLflow UI and check the URL:
 ```
 http://your-server:5000/#/experiments/123
-                                        ^^^
+                                      ^^^
                                   Experiment ID
 ```
 
@@ -113,15 +112,30 @@ for exp in client.search_experiments():
     print(f"ID: {exp.experiment_id}, Name: {exp.name}")
 ```
 
+## 🔐 Authentication
+
+The script uses the same authentication as your MLflow CLI/UI:
+
+### No Authentication (default MLflow)
+```bash
+export MLFLOW_TRACKING_URI="http://mlflow-server:5000"
+python migrate_mlflow_runs.py --source 1 --target 2
+```
+
+### Basic Authentication
+```bash
+export MLFLOW_TRACKING_URI="http://user:pass@mlflow-server:5000"
+python migrate_mlflow_runs.py --source 1 --target 2
+```
+
+### Token-Based (Databricks, etc.)
+```bash
+export MLFLOW_TRACKING_URI="databricks"
+export DATABRICKS_TOKEN="dapi..."
+python migrate_mlflow_runs.py --source 1 --target 2
+```
+
 ## 📊 Performance
-
-### Speed Comparison
-
-| Scenario | Sequential | With `--parallel 4` | Speedup |
-|----------|-----------|-------------------|---------|
-| 1 run, 10K metrics | 3 sec | 3 sec | 15x vs naive |
-| 100 runs, 100 metrics | 30 sec | 8 sec | 37x vs naive |
-| 100 runs, 10K metrics | 5 min | 1.5 min | 50x vs naive |
 
 ### Performance Tips
 
@@ -158,64 +172,7 @@ Each migrated run includes these tags:
 - **New run IDs**: Migrated runs get new IDs in the target experiment
 - **Traceable**: Migration tags allow tracking back to originals
 
-## 🔐 Authentication
-
-The script uses the same authentication as your MLflow CLI/UI:
-
-### No Authentication (default MLflow)
-```bash
-export MLFLOW_TRACKING_URI="http://mlflow-server:5000"
-python migrate_mlflow_runs.py --source 1 --target 2
-```
-
-### Basic Authentication
-```bash
-export MLFLOW_TRACKING_URI="http://user:pass@mlflow-server:5000"
-python migrate_mlflow_runs.py --source 1 --target 2
-```
-
-### Token-Based (Databricks, etc.)
-```bash
-export MLFLOW_TRACKING_URI="databricks"
-export DATABRICKS_TOKEN="dapi..."
-python migrate_mlflow_runs.py --source 1 --target 2
-```
-
-## 🐛 Troubleshooting
-
-### "Experiment not found"
-```bash
-# List available experiments
-mlflow experiments list
-```
-
-### Slow migration
-- Add `--parallel 4` or `--parallel 8`
-- Increase `--batch-size` to 2000 or higher
-- Remove `--artifacts` if not needed
-
-### Memory issues
-- Reduce `--batch-size` to 500
-- Reduce `--parallel` workers to 2-4
-- Migrate in smaller batches using `--run-ids`
-
 ## 📝 Requirements
 
 - Python 3.7+
 - MLflow 2.0+
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🙏 Credits
-
-Created with assistance from Claude Code (Anthropic).
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## ⭐ Support
-
-If this tool helped you, please consider giving it a star on GitHub!
