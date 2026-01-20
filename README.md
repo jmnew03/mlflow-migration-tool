@@ -1,6 +1,6 @@
 # MLflow Run Migration Tool ⚡
 
-A high-performance Python script to migrate MLflow runs between experiments. 
+A high-performance Python script to migrate MLflow runs between experiments in a server. 
 
 ## ✨ Features
 
